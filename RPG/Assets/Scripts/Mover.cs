@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.AI;
 
 public class Mover : MonoBehaviour
@@ -13,11 +14,24 @@ public class Mover : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            lastRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            MoveToCursor();
         }
 
-        Debug.DrawRay(lastRay.origin, lastRay.direction * 100);
 
-        GetComponent<NavMeshAgent>().destination = target.position;
+    }
+
+    private void MoveToCursor()
+    {
+        lastRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        
+
+        //if we hit something move
+        if(Physics.Raycast(lastRay, out hit))
+        {
+            GetComponent<NavMeshAgent>().destination = hit.point;
+        }
+
     }
 }
